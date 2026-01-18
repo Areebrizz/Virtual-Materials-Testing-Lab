@@ -1,0 +1,22 @@
+# Core Dependencies
+streamlit
+numpy
+pandas
+plotly
+scipy
+scikit-learn
+
+# Additional Visualization
+matplotlib
+seaborn
+
+# Optional for enhanced performance
+numba
+pyvista  # For 3D visualizations
+
+# Streamlit Extensions
+streamlit-plotly-events
+
+# Development Tools
+ipython
+jupyter

@@ -1,487 +1,249 @@
-🔬 Virtual Materials Testing Laboratory
-=======================================
+🔬 Virtual Materials Testing Laboratory (VMTL)
+==============================================
 
-**Version 3.0 | ISO 6892-1 Compliant | Multi-scale Modeling Framework**
+**Version 3.0 | ISO 6892-1 Aligned | Multi-scale Modeling Framework**
 
-A comprehensive virtual laboratory for materials science education and research, featuring advanced simulations of material testing, microstructure design, alloy development, and ISO-compliant data analysis.
+A comprehensive virtual laboratory for **materials science education and research**, featuring simulations of material testing, microstructure design, alloy development, and standards-aligned data analysis.
+
+> This platform is intended for **education, research, and concept validation**. It does **not** replace certified physical testing laboratories.
 
 🌟 Features
 -----------
 
-### **Core Modules:**
+### Core Modules
 
-1.  **⚗️ Sample Preparation Station**
-    
-    *   Material selection from ASM Handbook database
-        
-    *   Microstructure design with Hall-Petch strengthening
-        
-    *   Heat treatment simulation (quenching, tempering, aging)
-        
-2.  **📈 Tensile Testing Module**
-    
-    *   Advanced stress-strain curve generation
-        
-    *   Multiple constitutive models (Hollomon, Voce)
-        
-    *   True stress-strain conversion and necking prediction
-        
-    *   Interactive visualization with Plotly
-        
-3.  **🔄 Fatigue Testing Module**
-    
-    *   S-N curve generation with Basquin equation
-        
-    *   Surface finish and R-ratio effects
-        
-    *   Fatigue life prediction
-        
-4.  **⚡ Fracture Toughness Testing**
-    
-    *   Crack tip stress field analysis
-        
-    *   Plastic zone size estimation
-        
-    *   Williams asymptotic expansion
-        
-5.  **🔥 Creep Testing Module**
-    
-    *   Norton's law creep deformation
-        
-    *   Larson-Miller parameter calculation
-        
-    *   Rupture life prediction
-        
-6.  **🔬 Microstructure Viewer**
-    
-    *   Voronoi tessellation microstructure generation
-        
-    *   Interactive 2D/3D visualization
-        
-    *   Grain statistics calculation
-        
-7.  **🧪 Alloy Designer**
-    
-    *   Empirical alloy property prediction
-        
-    *   Solid solution and precipitation strengthening
-        
-    *   Custom alloy composition design
-        
-8.  **📊 Data Export & Certification**
-    
-    *   ISO 6892-1 compliant test certificates
-        
-    *   CSV and JSON export
-        
-    *   Quality assurance documentation
-        
+#### ⚗️ Sample Preparation Station
 
-🚀 Quick Start
---------------
-
-### **Prerequisites:**
-
-bash
-
-Python 3.8+  pip install streamlit numpy pandas plotly scipy   `
-
-### **Installation:**
-
-1.  Clone the repository:
+*   Material selection from a curated ASM-based database
+    
+*   Microstructure design with Hall–Petch strengthening
+    
+*   Heat treatment simulation: quenching, tempering, aging
     
 
-bash
+#### 📈 Tensile Testing Module
 
-git clone https://github.com/areebrizwan/virtual-materials-lab.git  cd virtual-materials-lab   `
-
-1.  Install dependencies:
+*   Stress–strain curve generation
+    
+*   Constitutive models: Hollomon, Voce
+    
+*   True stress–strain conversion and necking prediction
+    
+*   Interactive visualization using Plotly
     
 
-bash
+#### 🔄 Fatigue Testing Module
 
-pip install -r requirements.txt   `
-
-1.  Run the application:
+*   S–N curve generation using the Basquin equation
+    
+*   Surface finish and stress ratio (R) effects
+    
+*   Fatigue life prediction
     
 
-bash
+#### ⚡ Fracture Toughness Testing
 
-streamlit run streamlit_app.py   `
-
-### **Requirements (requirements.txt):**
-
-text
-
-streamlit>=1.28.0  numpy>=1.24.0  pandas>=2.0.0  plotly>=5.17.0  scipy>=1.11.0   `
-
-📖 Usage Guide
---------------
-
-### **Step 1: Sample Preparation**
-
-1.  Select a material from the database (Steel, Aluminum, Titanium, Stainless Steel)
+*   Crack-tip stress field estimation
     
-2.  Design microstructure parameters (grain size, porosity, inclusions)
+*   Plastic zone size calculation
     
-3.  Apply heat treatment (quenching rate, tempering temperature)
+*   Williams asymptotic expansion
     
 
-### **Step 2: Run Tests**
+#### 🔥 Creep Testing Module
 
-*   **Tensile Test**: Generate stress-strain curves with different constitutive models
+*   Creep deformation using Norton’s law
     
-*   **Fatigue Test**: Create S-N curves with surface finish effects
+*   Larson–Miller parameter evaluation
     
-*   **Fracture Test**: Analyze crack tip stress fields
-    
-*   **Creep Test**: Simulate high-temperature deformation
+*   Rupture life prediction
     
 
-### **Step 3: Analyze Results**
+#### 🔬 Microstructure Viewer
 
-*   Interactive visualizations with zoom and hover details
+*   Voronoi tessellation-based microstructure generation
     
-*   Mechanical property calculations
+*   Interactive 2D/3D visualization
     
-*   Statistical uncertainty analysis
-    
-
-### **Step 4: Export Data**
-
-*   Generate ISO-compliant test certificates
-    
-*   Export to CSV for further analysis
-    
-*   Create JSON reports for documentation
+*   Grain size and statistical analysis
     
 
-🎯 Educational Applications
+#### 🧪 Alloy Designer
+
+*   Empirical alloy property prediction
+    
+*   Solid-solution and precipitation strengthening models
+    
+*   Custom alloy composition design
+    
+
+#### 📊 Data Export and Certification
+
+*   Standards-aligned tensile test reports
+    
+*   CSV and JSON export
+    
+*   Quality documentation for coursework and research
+    
+
+
+📖 Usage Workflow
+-----------------
+
+1.  **Sample Preparation**
+    
+    *   Select a base material
+        
+    *   Define microstructural parameters
+        
+    *   Apply heat treatment conditions
+        
+2.  **Testing**
+    
+    *   Tensile testing
+        
+    *   Fatigue life estimation
+        
+    *   Fracture mechanics analysis
+        
+    *   Creep deformation simulation
+        
+3.  **Analysis**
+    
+    *   Interactive plots
+        
+    *   Mechanical property extraction
+        
+    *   Statistical uncertainty inspection
+        
+4.  **Export**
+    
+    *   Generate standards-aligned reports
+        
+    *   Export raw and processed data
+        
+
+🎓 Educational Applications
 ---------------------------
 
-### **For Students:**
+### Students
 
-*   Virtual lab experiments replacing expensive equipment
+*   Virtual experiments without physical equipment
     
-*   Interactive learning of materials science concepts
+*   Interactive learning of structure–property relationships
     
-*   Homework assignments with instant feedback
-    
-*   Project-based learning in materials design
+*   Assignment-ready simulations with reproducible results
     
 
-### **For Educators:**
+### Educators
 
-*   Lecture demonstrations with real-time simulations
+*   Live lecture demonstrations
     
-*   Pre-built lab manuals with learning objectives
+*   Virtual lab replacements
     
-*   Assessment tools for quantitative evaluation
+*   Quantitative assessment tools
     
-*   Research projects for undergraduate students
+*   Undergraduate research project support
     
 
 🔬 Scientific Foundations
 -------------------------
 
-### **Theoretical Models:**
+### Implemented Models
 
-*   **Constitutive Models**: Hollomon (σ = Kεⁿ), Voce (σ = σ₀ + Q(1 - exp(-bε)))
+*   Hollomon and Voce constitutive laws
     
-*   **Fatigue Analysis**: Basquin equation (σ\_a = σ\_f' \* (2N\_f)^b)
+*   Basquin fatigue relation
     
-*   **Fracture Mechanics**: Williams asymptotic expansion, plastic zone estimation
+*   Linear elastic fracture mechanics
     
-*   **Creep Prediction**: Norton's law, Larson-Miller parameter
+*   Norton creep law and Larson–Miller parameter
     
-*   **Strengthening Mechanisms**: Hall-Petch, solid solution, precipitation
-    
-
-### **Material Database:**
-
-*   **AISI 1045 Steel**: Carbon steel for general engineering
-    
-*   **Al 6061-T6**: Aluminum alloy for aerospace applications
-    
-*   **Ti-6Al-4V**: Titanium alloy for biomedical implants
-    
-*   **316L Stainless Steel**: Corrosion-resistant steel for chemical plants
+*   Strengthening mechanisms: Hall–Petch, solid solution, precipitation
     
 
-📊 Technical Specifications
----------------------------
+### Included Materials
 
-### **Software Architecture:**
-
-*   **Frontend**: Streamlit for interactive web interface
+*   AISI 1045 Steel
     
-*   **Visualization**: Plotly for 2D/3D interactive plots
+*   Aluminum 6061-T6
     
-*   **Data Processing**: NumPy, SciPy for scientific computing
+*   Ti-6Al-4V
     
-*   **Data Management**: Pandas for structured data handling
+*   Stainless Steel 316L
     
 
-### **Performance:**
+🧠 Software Architecture
+------------------------
 
-*   Real-time simulation response (< 1 second)
+*   **Frontend:** Streamlit
     
-*   Support for 1000+ data points per simulation
+*   **Visualization:** Plotly
     
-*   Memory-efficient session state management
+*   **Numerical Computing:** NumPy, SciPy
     
-*   Scalable for classroom deployment
-    
-
-### **Compliance:**
-
-*   ISO 6892-1: Tensile testing of metallic materials
-    
-*   ISO 7500-1: Calibration of force-measuring systems
-    
-*   ISO 9513: Calibration of extensometer systems
-    
-*   ISO/IEC 17025: General requirements for testing laboratories
+*   **Data Handling:** Pandas
     
 
-🌍 Impact & Benefits
---------------------
+Performance is optimized for real-time interaction with classroom-scale workloads.
 
-### **Cost Reduction:**
+📐 Standards Alignment
+----------------------
 
-*   **Equipment Savings**: $500,000+ per lab setup
-    
-*   **Material Savings**: No physical samples consumed
-    
-*   **Maintenance**: Zero equipment maintenance costs
-    
+This project aligns conceptually with:
 
-### **Accessibility:**
-
-*   **Global Access**: Available anywhere with internet
+*   ISO 6892-1 (Tensile testing of metallic materials)
     
-*   **24/7 Availability**: No lab scheduling constraints
+*   ISO 7500-1 (Force calibration)
     
-*   **Scalability**: Supports unlimited concurrent users
+*   ISO 9513 (Extensometer calibration)
+    
+*   ISO/IEC 17025 (Testing laboratory competence)
     
 
-### **Educational Value:**
+Alignment is **educational and methodological**, not certifying.
 
-*   **Hands-on Learning**: Interactive simulations
-    
-*   **Safety**: No risk of equipment failure or injury
-    
-*   **Repeatability**: Perfect experimental consistency
-    
-*   **Data Literacy**: Teaches data analysis and interpretation
-    
-
-🚀 Deployment Options
----------------------
-
-### **Local Deployment:**
-
-bash
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   # Simple local deployment  streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0   `
-
-### **Docker Deployment:**
-
-dockerfile
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   FROM python:3.9-slim  WORKDIR /app  COPY requirements.txt .  RUN pip install -r requirements.txt  COPY . .  EXPOSE 8501  CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]   `
-
-### **Cloud Deployment:**
-
-*   **Streamlit Cloud**: One-click deployment
-    
-*   **AWS/GCP/Azure**: Container-based deployment
-    
-*   **Heroku**: Simple PaaS deployment
-    
-
-📚 Learning Resources
----------------------
-
-### **Tutorials:**
-
-1.  **Beginner**: Basic tensile testing and property calculation
-    
-2.  **Intermediate**: Microstructure-property relationships
-    
-3.  **Advanced**: Alloy design and optimization
-    
-
-### **Sample Experiments:**
-
-*   Effect of grain size on yield strength
-    
-*   Temperature dependence of tensile properties
-    
-*   Surface finish effects on fatigue life
-    
-*   Crack growth prediction under cyclic loading
-    
-
-### **Assessment Tools:**
-
-*   Pre-lab quizzes
-    
-*   Simulation-based assignments
-    
-*   Data analysis reports
-    
-*   Research project templates
-    
-
-🔧 Development
---------------
-
-### **Project Structure:**
-
-text
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   virtual-materials-lab/  ├── streamlit_app.py          # Main application  ├── core.py                   # Core materials science models  ├── requirements.txt          # Python dependencies  ├── README.md                 # This file  ├── assets/                   # Images and static files  ├── examples/                 # Sample data and experiments  └── tests/                    # Unit tests   `
-
-### **Extending the Application:**
-
-#### **Adding New Materials:**
-
-python
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   new_material = MaterialProperties(      youngs_modulus=210.0,      poissons_ratio=0.30,      yield_strength=550.0,      tensile_strength=650.0,      elongation=15.0,      fracture_toughness=60.0,      fatigue_limit=300.0,      density=7800.0,      crystal_structure=CrystalStructure.BCC  )   `
-
-#### **Adding New Test Types:**
-
-python
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   class NewTester:      def __init__(self, material_props):          self.material = material_props      def run_test(self, parameters):          # Implement test logic          pass      def visualize_results(self):          # Create visualization          pass   `
+`
 
 🤝 Contributing
 ---------------
 
-We welcome contributions! Here's how you can help:
+Contributions are welcome via pull requests or issues. Please:
 
-1.  **Report Bugs**: Open an issue with detailed description
+*   Follow PEP 8
     
-2.  **Suggest Features**: Propose new modules or improvements
+*   Include docstrings and type hints
     
-3.  **Submit Code**: Pull requests for bug fixes or new features
-    
-4.  **Improve Documentation**: Enhance tutorials or add examples
-    
-
-### **Development Setup:**
-
-bash
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   # Fork and clone the repository  git clone https://github.com/your-username/virtual-materials-lab.git  cd virtual-materials-lab  # Create virtual environment  python -m venv venv  source venv/bin/activate  # On Windows: venv\Scripts\activate  # Install development dependencies  pip install -r requirements.txt  pip install black flake8 pytest  # Run tests  pytest tests/   `
-
-### **Coding Standards:**
-
-*   Follow PEP 8 style guide
-    
-*   Use type hints for function signatures
-    
-*   Write docstrings for all public functions
-    
-*   Add unit tests for new features
+*   Add tests for new features
     
 
 📄 License
 ----------
 
-This project is licensed under the MIT License - see the [LICENSE](https://license/) file for details.
+Licensed under the MIT License.
 
-📧 Contact
-----------
+👨‍💻 Author
+------------
 
-**Muhammad Areeb Rizwan Siddiqui**
+**Muhammad Areeb Rizwan Siddiqui** Mechanical Engineer | Materials & Manufacturing Systems
 
-*   Website: [www.areebrizwan.com](https://www.areebrizwan.com/)
+*   Website: [https://www.areebrizwan.com](https://www.areebrizwan.com/)
     
-*   LinkedIn: [linkedin.com/in/areebrizwan](https://www.linkedin.com/in/areebrizwan)
+*   LinkedIn: [https://www.linkedin.com/in/areebrizwan](https://www.linkedin.com/in/areebrizwan)
     
-*   Email: \[Contact through website\]
-    
-
-🙏 Acknowledgments
-------------------
-
-### **Academic Advisors:**
-
-*   Materials Science Department, \[Your University\]
-    
-*   Research Institute for Advanced Materials
-    
-
-### **Open Source Libraries:**
-
-*   **Streamlit**: For making web apps accessible
-    
-*   **Plotly**: For incredible visualization capabilities
-    
-*   **NumPy/SciPy**: For scientific computing foundation
-    
-*   **Pandas**: For data manipulation and analysis
-    
-
-### **Funding & Support:**
-
-*   Research Grant from \[Funding Agency\]
-    
-*   Institutional Support from \[University/Institution\]
-    
-*   Open Source Grants from NumFOCUS
-    
-
-📊 Citation
------------
-
-If you use VMTL in your research, please cite:
-
-bibtex
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   @software{virtual_materials_lab_2024,    title = {Virtual Materials Testing Laboratory: An Open-Source Multi-scale Simulation Platform},    author = {Siddiqui, Muhammad Areeb Rizwan},    year = {2024},    publisher = {GitHub},    journal = {GitHub repository},    howpublished = {\url{https://github.com/areebrizwan/virtual-materials-lab}},    doi = {10.5281/zenodo.xxxxxxx}  }   `
 
 📈 Roadmap
 ----------
 
-### **Short-term (2024):**
-
-*   Add more material database entries
+*   Expand material database
     
-*   Implement 3D microstructure visualization
+*   Add phase transformation modeling
     
-*   Add machine learning for property prediction
+*   Integrate FEM-based solvers
     
-*   Create student assessment module
+*   Introduce machine learning-assisted property prediction
     
-
-### **Medium-term (2025):**
-
-*   Add phase transformation simulations
-    
-*   Implement finite element analysis integration
-    
-*   Add corrosion testing module
-    
-*   Create collaborative features for group projects
+*   Enable collaborative classroom features
     
 
-### **Long-term (2026+):**
-
-*   Add quantum mechanics calculations
-    
-*   Implement multi-scale modeling framework
-    
-*   Create virtual reality interface
-    
-*   Develop mobile application
-    
-
-**🌟 Star this repository if you find it useful!**
-
-_Transforming materials science education through virtual simulation_
-
-[https://img.shields.io/github/stars/areebrizwan/virtual-materials-lab?style=social](https://img.shields.io/github/stars/areebrizwan/virtual-materials-lab?style=social)[https://img.shields.io/github/forks/areebrizwan/virtual-materials-lab?style=social](https://img.shields.io/github/forks/areebrizwan/virtual-materials-lab?style=social)[https://img.shields.io/badge/License-MIT-yellow.svg](https://img.shields.io/badge/License-MIT-yellow.svg)
+_Advancing materials science education through virtual experimentation._

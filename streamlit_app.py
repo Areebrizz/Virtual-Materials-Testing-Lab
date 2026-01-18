@@ -541,6 +541,23 @@ class VirtualMaterialsLab:
             )
             
             return fig
+        
+        def get_fatigue_life(self, stress_amplitude: float) -> float:
+            """Calculate fatigue life for given stress amplitude"""
+            if self.SN_data is None:
+                raise ValueError("Generate S-N curve first")
+            
+            N_cycles, stress_amp = self.SN_data
+            
+            # Interpolate to find N for given stress
+            if stress_amplitude <= min(stress_amp):
+                return 1e8  # Infinite life
+            elif stress_amplitude >= max(stress_amp):
+                return 1e3  # Short life
+            
+            # Find closest value
+            idx = np.argmin(np.abs(stress_amp - stress_amplitude))
+            return N_cycles[idx]
     
     # ==================== FRACTURE TOUGHNESS MODULE ====================
     
@@ -589,60 +606,81 @@ class VirtualMaterialsLab:
             stress_field = self.calculate_stress_field(K_I)
             r_p = self.estimate_plastic_zone(K_I)
             
-            # Convert polar to Cartesian
-            x = stress_field['r'] * np.cos(stress_field['theta'])
-            y = stress_field['r'] * np.sin(stress_field['theta'])
-            
+            # Create 4 heatmaps in 2x2 grid
             fig = make_subplots(
                 rows=2, cols=2,
                 subplot_titles=("σ_xx Stress Field",
                               "σ_yy Stress Field",
                               "Von Mises Stress",
                               "Plastic Zone"),
-                specs=[[{'type': 'heatmap'}, {'type': 'heatmap'}],
-                       [{'type': 'heatmap'}, {'type': 'scatter'}]]
+                vertical_spacing=0.15,
+                horizontal_spacing=0.1
             )
             
-            # σ_xx
+            # Convert polar to Cartesian for heatmaps
+            x = stress_field['r'] * np.cos(stress_field['theta'])
+            y = stress_field['r'] * np.sin(stress_field['theta'])
+            
+            # For heatmaps, we need 2D arrays
+            # σ_xx heatmap
             fig.add_trace(
-                go.Heatmap(z=stress_field['sigma_xx'], x=x[0], y=y[:,0],
-                          colorscale='RdBu', showscale=False),
+                go.Heatmap(z=stress_field['sigma_xx'], 
+                          colorscale='RdBu',
+                          showscale=True,
+                          name='σ_xx'),
                 row=1, col=1
             )
             
-            # σ_yy
+            # σ_yy heatmap
             fig.add_trace(
-                go.Heatmap(z=stress_field['sigma_yy'], x=x[0], y=y[:,0],
-                          colorscale='RdBu', showscale=False),
+                go.Heatmap(z=stress_field['sigma_yy'], 
+                          colorscale='RdBu',
+                          showscale=True,
+                          name='σ_yy'),
                 row=1, col=2
             )
             
-            # von Mises
+            # von Mises heatmap
             fig.add_trace(
-                go.Heatmap(z=stress_field['sigma_vm'], x=x[0], y=y[:,0],
-                          colorscale='Viridis', showscale=False),
+                go.Heatmap(z=stress_field['sigma_vm'], 
+                          colorscale='Viridis',
+                          showscale=True,
+                          name='σ_vm'),
                 row=2, col=1
             )
             
-            # Plastic zone
+            # Plastic zone visualization (simple scatter)
             theta_circle = np.linspace(0, 2*np.pi, 100)
             x_circle = r_p * np.cos(theta_circle)
             y_circle = r_p * np.sin(theta_circle)
             
             fig.add_trace(
                 go.Scatter(x=x_circle, y=y_circle,
-                          mode='lines', fill='toself',
+                          mode='lines',
+                          fill='toself',
                           fillcolor='rgba(255,0,0,0.2)',
                           line=dict(color='red'),
-                          name='Plastic Zone'),
+                          name=f'Plastic Zone (r={r_p:.2f} mm)'),
                 row=2, col=2
             )
             
+            # Update layout for plastic zone subplot
+            fig.update_xaxes(title_text="X (mm)", row=2, col=2, range=[-r_p*1.5, r_p*1.5])
+            fig.update_yaxes(title_text="Y (mm)", row=2, col=2, range=[-r_p*1.5, r_p*1.5])
+            
             fig.update_layout(
                 height=700,
-                title_text=f"Crack Tip Stress Fields - K_I = {K_I} MPa√m",
+                title_text=f"Crack Tip Analysis - K_I = {K_I} MPa√m, K_IC = {self.material.fracture_toughness} MPa√m",
                 showlegend=True
             )
+            
+            # Update axis labels for heatmaps
+            fig.update_xaxes(title_text="X (mm)", row=1, col=1)
+            fig.update_yaxes(title_text="Y (mm)", row=1, col=1)
+            fig.update_xaxes(title_text="X (mm)", row=1, col=2)
+            fig.update_yaxes(title_text="Y (mm)", row=1, col=2)
+            fig.update_xaxes(title_text="X (mm)", row=2, col=1)
+            fig.update_yaxes(title_text="Y (mm)", row=2, col=1)
             
             return fig
     
@@ -686,7 +724,9 @@ class VirtualMaterialsLab:
                                 temperature: float = 600.0):
             """Visualize creep curve"""
             
-            t_hours, strain_percent = self.creep_deformation(stress, temperature)
+            # Generate time and strain data
+            time_hours = 10000  # Default time for visualization
+            t_hours, strain_percent = self.creep_deformation(stress, temperature, time_hours)
             
             fig = go.Figure()
             
@@ -694,6 +734,21 @@ class VirtualMaterialsLab:
                 go.Scatter(x=t_hours, y=strain_percent, mode='lines',
                           name='Creep Strain', line=dict(color='purple', width=3))
             )
+            
+            # Add secondary creep region indication
+            if len(strain_percent) > 100:
+                # Find where strain rate becomes constant (secondary creep)
+                strain_rate = np.gradient(strain_percent, t_hours)
+                min_rate_idx = np.argmin(strain_rate[100:]) + 100
+                secondary_time = t_hours[min_rate_idx]
+                secondary_strain = strain_percent[min_rate_idx]
+                
+                fig.add_vline(x=secondary_time, line_dash="dash", line_color="green",
+                            annotation_text="Secondary Creep Start")
+                fig.add_annotation(x=secondary_time, y=secondary_strain,
+                                 text="Secondary Creep",
+                                 showarrow=True,
+                                 arrowhead=1)
             
             fig.update_layout(
                 xaxis_title="Time (hours)",
@@ -704,6 +759,19 @@ class VirtualMaterialsLab:
             )
             
             return fig
+        
+        def calculate_rupture_life(self, stress: float, temperature: float) -> float:
+            """Estimate rupture life using Larson-Miller parameter"""
+            
+            # Simplified Larson-Miller
+            C = 20  # Typical constant for steels
+            LMP = (temperature + 273.15) * (C + np.log10(1000))  # Base LMP
+            
+            # Adjust for stress
+            stress_factor = (self.material.tensile_strength / stress) ** 3
+            rupture_hours = 10 ** (LMP / (temperature + 273.15) - C) * stress_factor
+            
+            return max(rupture_hours, 1)
     
     # ==================== MICROSTRUCTURE VIEWER ====================
     
@@ -717,8 +785,10 @@ class VirtualMaterialsLab:
                                           size: int = 400) -> np.ndarray:
             """Generate synthetic microstructure"""
             
-            # Number of grains
-            n_grains = int((size * size) / (grain_size ** 2))
+            # Number of grains (approximate)
+            area = size * size
+            grain_area = grain_size * grain_size
+            n_grains = max(10, int(area / grain_area))
             
             # Random grain centers
             points = np.random.rand(n_grains, 2) * size
@@ -746,17 +816,45 @@ class VirtualMaterialsLab:
             fig.add_trace(
                 go.Heatmap(z=grain_map, 
                           colorscale='Viridis',
-                          showscale=False)
+                          showscale=False,
+                          name='Grain Map')
             )
             
             fig.update_layout(
                 title=f"Microstructure - Grain Size: {grain_size} μm",
                 height=500,
                 xaxis_title="X (μm)",
-                yaxis_title="Y (μm)"
+                yaxis_title="Y (μm)",
+                showlegend=False
             )
             
             return fig
+        
+        def calculate_grain_statistics(self, grain_map: np.ndarray) -> Dict[str, float]:
+            """Calculate basic grain statistics"""
+            
+            unique_grains = np.unique(grain_map)
+            n_grains = len(unique_grains)
+            
+            # Calculate areas
+            areas = []
+            for grain in unique_grains:
+                mask = grain_map == grain
+                areas.append(np.sum(mask))
+            
+            mean_area = np.mean(areas)
+            std_area = np.std(areas)
+            
+            # Convert to equivalent diameter
+            mean_diameter = 2 * np.sqrt(mean_area / np.pi)
+            
+            return {
+                "number_of_grains": n_grains,
+                "mean_grain_area": mean_area,
+                "std_grain_area": std_area,
+                "mean_grain_diameter": mean_diameter,
+                "grain_size_variation": std_area / mean_area if mean_area > 0 else 0
+            }
     
     # ==================== ALLOY DESIGNER ====================
     
@@ -791,13 +889,19 @@ class VirtualMaterialsLab:
         # Estimate elongation
         predicted_elongation = 30 - 20 * (predicted_yield / 1000)
         
+        # Estimate Young's modulus
+        base_E = 200 if base_element == "Fe" else 70
+        predicted_E = base_E * (1 + 0.01 * sum(alloying_elements.values()))
+        
         return {
             "alloy_composition": alloying_elements,
             "predicted_yield_strength": round(predicted_yield, 1),
             "predicted_tensile_strength": round(predicted_yield * 1.2, 1),
             "predicted_elongation": round(max(5, predicted_elongation), 1),
+            "predicted_youngs_modulus": round(predicted_E, 1),
             "solid_solution_contribution": round(ss_strength, 1),
-            "grain_boundary_contribution": round(gb_strength, 1)
+            "grain_boundary_contribution": round(gb_strength, 1),
+            "base_strength": round(base_strength, 1)
         }
     
     # ==================== DATA EXPORT ====================
@@ -810,10 +914,21 @@ class VirtualMaterialsLab:
         certificate = {
             "test_laboratory": "Virtual Materials Testing Lab v3.0",
             "iso_standard": "ISO 6892-1",
-            "test_date": pd.Timestamp.now().strftime("%Y-%m-%d"),
+            "test_date": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
             "material_identification": material,
             "test_type": test_type,
-            "mechanical_properties": properties
+            "test_conditions": {
+                "temperature": "23 ± 2°C",
+                "humidity": "50 ± 10% RH",
+                "strain_rate": "0.001 s⁻¹"
+            },
+            "mechanical_properties": properties,
+            "measurement_uncertainty": "Expanded uncertainty k=2 (95% confidence)",
+            "calibration_status": "All equipment within calibration period",
+            "signature": {
+                "test_engineer": "Virtual Testing System",
+                "approval": "ISO/IEC 17025 compliant simulation"
+            }
         }
         
         return certificate
@@ -1127,7 +1242,11 @@ elif page == "🔄 Fatigue Testing":
                 with col4:
                     endurance_ratio = material_props.fatigue_limit / material_props.tensile_strength
                     st.metric("Endurance Ratio", f"{endurance_ratio:.3f}")
-                    st.metric("Cycles to Failure (at 300MPa)", "~1,000,000")
+                    
+                    # Example fatigue life calculation
+                    test_stress = 300  # MPa
+                    fatigue_life = tester.get_fatigue_life(test_stress)
+                    st.metric(f"Cycles at {test_stress}MPa", f"{fatigue_life:,.0f}")
         
         # Visualization
         if "fatigue_tester" in st.session_state:
@@ -1202,7 +1321,6 @@ elif page == "🔥 Creep Testing":
             st.markdown("### Creep Test Parameters")
             stress = st.slider("Applied Stress (MPa)", 50, 300, 100, 10)
             temperature = st.slider("Temperature (°C)", 400, 800, 600, 10)
-            time_hours = st.slider("Test Duration (hours)", 10, 10000, 1000, 100)
             
             if st.button("Run Creep Test", type="primary"):
                 tester = st.session_state.lab.CreepTester(material_props)
@@ -1215,15 +1333,20 @@ elif page == "🔥 Creep Testing":
                 
                 st.markdown("### Creep Properties")
                 
-                # Estimate rupture life (simplified)
-                if temperature > 500:
-                    rupture_life = 10000 / (stress/100) * np.exp(-0.01*(temperature-500))
-                else:
-                    rupture_life = 100000
-                
+                # Calculate rupture life
+                rupture_life = tester.calculate_rupture_life(stress, temperature)
                 st.metric("Estimated Rupture Life", f"{rupture_life:.0f} hours")
+                
                 st.metric("Test Temperature", f"{temperature}°C")
-                st.metric("Melting Point Homology", f"{(temperature+273)/(1668+273):.2f}")
+                
+                # Calculate time to 1% creep strain
+                t_hours, strain_percent = tester.creep_deformation(stress, temperature, 10000)
+                if len(strain_percent) > 0:
+                    # Find time to reach 1% strain
+                    idx = np.argmax(strain_percent >= 1)
+                    if idx > 0:
+                        time_to_1pct = t_hours[idx]
+                        st.metric("Time to 1% Strain", f"{time_to_1pct:.0f} hours")
         
         # Visualization
         if "creep_tester" in st.session_state:
@@ -1307,6 +1430,7 @@ elif page == "🧪 Alloy Designer":
             st.metric("Yield Strength", f"{result['predicted_yield_strength']} MPa")
             st.metric("Tensile Strength", f"{result['predicted_tensile_strength']} MPa")
             st.metric("Elongation", f"{result['predicted_elongation']}%")
+            st.metric("Young's Modulus", f"{result['predicted_youngs_modulus']} GPa")
             
             st.markdown("#### Strengthening Contributions")
             st.metric("Solid Solution", f"{result['solid_solution_contribution']} MPa")
@@ -1329,9 +1453,14 @@ elif page == "📊 Data Export":
                 ["Tensile Test", "Fatigue Test", "Fracture Test", "Creep Test"]
             )
             
+            # Get properties from last test
+            properties = st.session_state.test_results.get("tensile", {
+                "Yield Strength (MPa)": 0,
+                "UTS (MPa)": 0,
+                "Elongation (%)": 0
+            })
+            
             if st.button("Generate Certificate", type="primary"):
-                # Get properties from last test
-                properties = st.session_state.test_results.get("tensile", {})
                 certificate = st.session_state.lab.generate_test_certificate(
                     test_type=test_type,
                     material=st.session_state.current_material,
@@ -1355,10 +1484,20 @@ elif page == "📊 Data Export":
         with col3:
             if st.button("Export to CSV", type="secondary"):
                 if "certificate" in st.session_state:
-                    df = pd.DataFrame([st.session_state.certificate])
+                    # Flatten the certificate for CSV
+                    flat_data = {}
+                    for key, value in st.session_state.certificate.items():
+                        if isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                flat_data[f"{key}_{subkey}"] = subvalue
+                        else:
+                            flat_data[key] = value
+                    
+                    df = pd.DataFrame([flat_data])
                     csv = df.to_csv(index=False)
+                    
                     st.download_button(
-                        label="Download CSV",
+                        label="📥 Download CSV",
                         data=csv,
                         file_name="test_certificate.csv",
                         mime="text/csv"
@@ -1369,7 +1508,7 @@ elif page == "📊 Data Export":
                 if "certificate" in st.session_state:
                     json_data = json.dumps(st.session_state.certificate, indent=2)
                     st.download_button(
-                        label="Download JSON",
+                        label="📥 Download JSON",
                         data=json_data,
                         file_name="test_certificate.json",
                         mime="application/json"

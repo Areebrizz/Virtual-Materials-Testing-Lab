@@ -1519,7 +1519,7 @@ elif page == "📊 Data Export":
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #7f8c8d; font-size: 0.9rem; padding: 1rem;'>
-    <b>Virtual Materials Testing Laboratory v3.0</b><br>
-    Academic Edition | ISO 6892-1 Compliant | Multi-scale Modeling Framework
+    <b>Made By: Muhammad Areeb Rizwan</b><br>
+    Virtual Materials Testing Laboratory v3.0 | ISO 6892-1 Compliant | Multi-scale Modeling Framework
 </div>
 """, unsafe_allow_html=True)
